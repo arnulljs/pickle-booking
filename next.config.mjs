@@ -1,8 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  /* config options here */
-  cacheComponents: true,
-  partialPrefetching: true,
+  /* barebones: skip cacheComponents so client pages can use force-dynamic */
 };
 
 export default nextConfig;

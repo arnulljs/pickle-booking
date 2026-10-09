@@ -1,36 +1,22 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# PickleBook — barebones pickleball booking
 
-## Getting Started
+Next.js + SQLite. 2 courts, 5PM–2AM, 1hr slots, ₱400/hr.
 
-First, run the development server:
-
+## Run
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+cp .env.example .env.local  # set ADMIN_PASSWORD
+npm install
+npm run dev   # http://localhost:3000
 ```
+Admin: `/admin` (default `admin123`). Customer lookup: `/my-bookings` via phone + `BK-XXXX`.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Flow
+`/` grid (tap start → tap end) → `/book` (1 slot, 2 details, 3 pay) → pending 1hr hold → admin approves.
+Payments: GCash / Card / Bank. Manual screenshot-verify now; `lib/payments.js:createIntent()` is the stub for PayMongo — add `PAYMONGO_SECRET` and implement there.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## API
+- `GET /api/availability?date=YYYY-MM-DD`
+- `POST /api/bookings` / `GET /api/bookings?phone=&ref=`
+- `POST /api/admin` `{action: login|approve|decline|block|unblock|manual|settings}` + `GET /api/admin`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Skipped: promo codes, reports, inventory. Add when needed.
